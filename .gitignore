@@ -8,3 +8,6 @@ __pycache__/
 local_uploads/
 vector_db/
 .DS_Store
+.dist/
+.claude/
+MASTER_PROMPT.md
