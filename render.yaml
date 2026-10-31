@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: multi-tenant-rag-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: multi-tenant-rag-db
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "true"
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: VECTOR_DB_PATH
+        value: /app/vector_db
+      - key: UPLOAD_DIR
+        value: /app/local_uploads
+
+databases:
+  - name: multi-tenant-rag-db
+    plan: free

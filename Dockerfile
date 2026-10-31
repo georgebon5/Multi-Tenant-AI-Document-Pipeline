@@ -30,6 +30,7 @@ COPY --from=builder /install /usr/local
 COPY alembic.ini .
 COPY alembic/ alembic/
 COPY app/ app/
+COPY frontend/ frontend/
 
 # Create directories for uploads and vector DB
 RUN mkdir -p local_uploads vector_db && chown -R appuser:appuser /app
@@ -39,6 +40,6 @@ USER appuser
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD curl -f http://localhost:${PORT:-8000}/health || exit 1
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
